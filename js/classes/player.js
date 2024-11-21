@@ -34,7 +34,7 @@ class Player extends GameObject {
 
     draw() {
         c.beginPath();
-        c.fillStyle = "white";
+        c.fillStyle = "black";
         c.fillRect(this.pos.x, this.pos.y, this.width, this.height);
     }
 

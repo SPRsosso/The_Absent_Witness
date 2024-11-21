@@ -3,7 +3,7 @@ const c = canvas.getContext("2d");
 
 canvas.width = innerWidth;
 canvas.height = innerHeight;
-canvas.style.backgroundColor = "black";
+canvas.style.backgroundColor = "white";
 
 canvas.clear = () => {
     c.clearRect(0, 0, canvas.width, canvas.height);
@@ -12,8 +12,6 @@ canvas.clear = () => {
 const frames = 60;
 const fps = 1000 / 60;
 
-const gravity = 0.5;
-
 const KEYS = {
     UP: "UP",
     DOWN: "DOWN",
@@ -21,3 +19,5 @@ const KEYS = {
     RIGHT: "RIGHT",
 }
 let keyPresses = [];
+
+const gravity = 0.5;
