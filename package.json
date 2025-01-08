@@ -1,0 +1,21 @@
+{
+  "name": "the_absent_witness",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/SPRsosso/The_Absent_Witness#readme",
+  "bugs": {
+    "url": "https://github.com/SPRsosso/The_Absent_Witness/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SPRsosso/The_Absent_Witness.git"
+  },
+  "license": "ISC",
+  "author": "sosso",
+  "type": "commonjs",
+  "main": "main.js",
+  "scripts": {
+    "compile": "tsc",
+    "watch": "tsc --watch"
+  }
+}
