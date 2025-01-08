@@ -1,19 +1,26 @@
-const player = new Player(canvas.width / 2, canvas.height / 2);
+const player = new Player(canvas.width / 2, canvas.height / 2, 80);
 const walkPaths = [
     new WalkPath(innerWidth / 2 - innerWidth / 4, innerHeight - 70, innerWidth / 2, 70),
     new WalkPath(innerWidth / 2 - innerWidth / 6, innerHeight - 70 - 70, innerWidth / 3, 70),
 ];
 
 const interactableObjects = [
-    new InteractableObject(innerWidth / 2, innerHeight - 140, 80, 40, "footprint_floor.png", () => {}),
+    new InteractableObject(innerWidth / 2, innerHeight - 140, 60, 15, "footprint_floor.png", () => {}),
 ] 
 
 const gameInterval = setInterval(() => {
     canvas.clear();
+
+    const image = new Image();
+    image.src = "./imgs/building_1.png";
+    const imageSize = 700;
+
+    c.drawImage(image, 0, canvas.height - imageSize, imageSize, imageSize);
 
     player.render();
 
     walkPaths.forEach(path => path.render());
 
     interactableObjects.forEach(obj => obj.render());
+
 }, fps);

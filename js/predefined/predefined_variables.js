@@ -3,14 +3,15 @@ const c = canvas.getContext("2d");
 
 canvas.width = innerWidth;
 canvas.height = innerHeight;
-canvas.style.backgroundColor = "white";
+canvas.style.backgroundImage = `url("./imgs/sky.png")`;
 
-canvas.clear = () => {
-    c.clearRect(0, 0, canvas.width, canvas.height);
-}
+c.mozImageSmoothingEnabled = false;
+c.webkitImageSmoothingEnabled = false;
+c.msImageSmoothingEnabled = false;
+c.imageSmoothingEnabled = false;
 
-const frames = 60;
-const fps = 1000 / 60;
+const frames = 60; // frames
+const fps = 1000 / 60; // ms
 
 const KEYS = {
     UP: "UP",

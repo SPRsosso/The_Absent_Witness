@@ -1,12 +1,23 @@
 class Player extends GameObject {
-    static movementSpeed = 2;
+    static movementSpeed = 1.5;
 
-    constructor(x, y) {
+    #currentFrame;
+    #canAnimate;
+    #animationTime;
+    constructor(x, y, width) {
         super();
 
         this.pos = new Vertex(x, y);
-        this.width = 80;
+        this.width = width;
         this.height = 2 * this.width;
+
+        this.#animationTime = 0;
+        this.#currentFrame = 0;
+        this.#canAnimate = true;
+
+        this.direction = "right";
+        this.img = new Image();
+        this.changeAnimation("person_idle", 1000);
 
         this.v = new Vertex(0, 0);
     }
@@ -24,8 +35,6 @@ class Player extends GameObject {
             this.v.y += gravity;
         }
 
-        
-
         this.walk();
 
         this.pos.x += this.v.x;
@@ -33,9 +42,28 @@ class Player extends GameObject {
     }
 
     draw() {
-        c.beginPath();
-        c.fillStyle = "black";
-        c.fillRect(this.pos.x, this.pos.y, this.width, this.height);
+        const personWidth = 32;
+        const animationFrames = Math.floor(this.img.width / personWidth);
+
+        c.drawImage(this.img, this.#currentFrame * personWidth, 0, personWidth, this.img.height, this.pos.x, this.pos.y, this.width, this.height);
+
+        if (!this.#canAnimate) return;
+        
+        this.#currentFrame = ++this.#currentFrame % animationFrames;
+
+        this.#canAnimate = false;
+        setTimeout(() => {
+            this.#canAnimate = true;
+        }, this.#animationTime);
+    }
+
+    changeAnimation(src, frameTime, changeFrame = true) {
+        this.img.src = `./imgs/${src}_${this.direction}.png`;
+
+        if (changeFrame)
+            this.#currentFrame = 0;
+
+        this.#animationTime = frameTime;
     }
 
     walk() {

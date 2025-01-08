@@ -8,7 +8,7 @@ class GameObject {
     }
 
     render() {
-        this.update();
         this.draw();
+        this.update();
     }
 }
