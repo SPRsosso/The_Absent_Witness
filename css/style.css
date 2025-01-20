@@ -6,6 +6,7 @@
 *::before,
 *::after {
     box-sizing: border-box;
+    image-rendering: pixelated;
 }
 
 body {
@@ -13,6 +14,7 @@ body {
 }
 
 canvas {
+    background-image: url("../imgs/sky.png");
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
