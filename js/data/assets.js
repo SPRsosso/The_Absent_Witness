@@ -1,9 +1,4 @@
-interface Asset {
-    imgs: { [key: string]: any },
-    sounds: { [key: string]: any },
-}
-
-export const assetsToPreload: Asset = {
+export const assetsToPreload = {
     imgs: {
         "player_walking_left": "./imgs/person_walking_left.png",
         "player_walking_right": "./imgs/person_walking_right.png",
@@ -16,10 +11,8 @@ export const assetsToPreload: Asset = {
         "slider_thumb": "./imgs/slider_thumb.png",
         "slider_track": "./imgs/slider_track.png",
         "credits_btn": "./imgs/credits_btn.png",
-
         //! ITEMS
         "key": "./imgs/key.png",
-
         //! OFFICE
         "office_background": "./imgs/office_background.png",
         "office_corridor": "./imgs/office_corridor.png",
@@ -36,8 +29,6 @@ export const assetsToPreload: Asset = {
         "bathroom_floor": "./imgs/bathroom_floor.png",
         //? OFFICE RECEPTION
         "vending_machine": "./imgs/vending_machine.png",
-
-
         "magnifying_glass": "./imgs/magnifying_glass.png",
     },
     sounds: {
@@ -49,12 +40,7 @@ export const assetsToPreload: Asset = {
         "sweeping_garbage": "./sounds/sweeping_garbage.mp3",
     }
 };
-
-export const loadedAssets: Asset = {
-    imgs: {
-
-    },
-    sounds: {
-
-    }
+export const loadedAssets = {
+    imgs: {},
+    sounds: {}
 };

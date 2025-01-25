@@ -1,5 +1,10 @@
 import { areas } from "./data/areas.js";
 import { degToRad, radToDeg } from "./functions.js";
+import { init } from "./init.js";
+import { InteractableObject } from "./interactable_object/interactable_object.js";
+import { Decoration } from "./objects/decoration.js";
+import { ObjectType } from "./objects/object_type.js";
+import { objects } from "./objects/objects.js";
 import { Player } from "./player.js";
 import { preloadAssets } from "./preload.js";
 
@@ -12,9 +17,11 @@ canvas
 export const c = canvas.getContext("2d") as CanvasRenderingContext2D;
 c.imageSmoothingEnabled = false;
 
-const player: Player = new Player(canvas.width / 2 - 50, 0, 100, 200);
-player.init();
-// player.teleport(0, 0);
+export const items: HTMLDivElement = document.querySelector(".items") as HTMLDivElement;
+
+export const player: Player = new Player(1920 / 2, 0, 180, 360);
+
+const menu = document.querySelector<HTMLDivElement>(".menu");
 
 let bt: number = performance.now();
 export let dt: number = 0;
@@ -28,13 +35,18 @@ function game(): void {
     dt = (tmp - bt) / fps;
     bt = tmp;
 
+    if (dt > 2) {
+        dt = 2;
+    }
+
     if (dtSum >= fps) {
-        // console.log(fpsCounter);
         dtSum -= 1000;
         fpsCounter = 0;
     }
     fpsCounter++;
     dtSum += dt;
+
+    
 
     //! Game loop
     c.beginPath();
@@ -43,10 +55,22 @@ function game(): void {
 
     Object.values(areas).forEach(area => {
         area.clear();
-        area.render(true);
+        area.render();
+    });
+
+    objects.forEach(obj => {
+        if (obj.type !== ObjectType.Area && obj.backdropRendering) {
+            obj.render();
+        }
     });
 
     player.render();
+
+    objects.forEach(obj => {
+        if (obj.type !== ObjectType.Area && !obj.backdropRendering) {
+            obj.render();
+        }
+    })
     
     requestAnimationFrame(game);
 }
@@ -54,7 +78,13 @@ function game(): void {
 async function start(): Promise<void> {
     try {
         await preloadAssets();
+        await init();
+
+        if (menu) menu.style.display = "none";
     
+        player.init();
+        player.teleport(areas.workshop.left() + 530, areas.workshop.bottom() - player.h);
+
         game();
     } catch (error) {
         console.error('Error during asset loading:', error);

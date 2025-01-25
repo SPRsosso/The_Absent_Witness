@@ -1,5 +1,6 @@
 * {
     margin: 0;
+    font-family: system-ui;
 }
 
 *,
@@ -20,3 +21,75 @@ canvas {
     background-size: cover;
     image-rendering: pixelated;
 }
+
+.dialog-text {
+    padding: 10px;
+    font-size: 28px;
+    font-family: monospace;
+
+    position: absolute;
+    bottom: 0;
+    left: 0;
+
+    color: white;
+    word-wrap: break-word;
+}
+
+.menu {
+    width: 100%;
+    height: 100vh;
+
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+
+    background-image: url("../imgs/background_menu.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.title {
+    background-color: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+    width: 100%;
+    padding: 50px 25%;
+
+    position: absolute;
+    top: 0;
+    left: 50%;
+    translate: -50% 0;
+}
+
+.items {
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+
+    .item {
+        width: 96px;
+        aspect-ratio: 1;
+        border-radius: 5px;
+        background-color: rgba(255, 255, 255, 0.7);
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        gap: 10px;
+        padding: 5px;
+
+        font-weight: 700;
+
+        img {
+            flex-grow: 1;
+        }
+    }
+}
+

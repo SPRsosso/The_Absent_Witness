@@ -3,54 +3,44 @@ import { c } from "../main.js";
 import { GameObject } from "../objects/game_object.js";
 import { ObjectType } from "../objects/object_type.js";
 import { objects } from "../objects/objects.js";
-
 export class Area extends GameObject {
-    debugColor: string = "red";
-    backgroundTexture: string | null = null;
-    floorTexture: string | null = null;
-    constructor(x: number, y: number, w: number, h: number, debugColor: string, floorTexture: string | null = null, backgroundTexture: string | null = null) {
+    constructor(x, y, w, h, debugColor, floorTexture = null, backgroundTexture = null) {
         super(x, y, w, h, false, ObjectType.Area);
+        this.debugColor = "red";
+        this.backgroundTexture = null;
+        this.floorTexture = null;
         this.floorTexture = floorTexture;
         this.backgroundTexture = backgroundTexture;
-        
         this.debugColor = debugColor;
-
         objects.push(this);
     }
-
-    draw(): void {
+    draw() {
         if (this.floorTexture) {
-            const img: HTMLImageElement = loadedAssets.imgs[this.floorTexture];
-
+            const img = loadedAssets.imgs[this.floorTexture];
             const imgScale = 4;
             const imgWidth = img.width * imgScale;
             for (let i = 0; i < this.w + imgWidth; i += imgWidth) {
                 c.beginPath();
                 if (this.w - i - imgWidth > 0) {
                     c.drawImage(img, this.x + i, this.bottom(), imgWidth, imgWidth);
-                } else {
+                }
+                else {
                     c.drawImage(img, 0, 0, (this.w - i) / imgScale, img.height, this.x + i, this.bottom(), (this.w - i), imgWidth);
                 }
             }
         }
-
         if (this.backgroundTexture) {
-            const img: HTMLImageElement = loadedAssets.imgs[this.backgroundTexture];
-
+            const img = loadedAssets.imgs[this.backgroundTexture];
             c.beginPath();
             c.drawImage(img, this.x, this.y, this.w, this.h);
         }
     }
-
-    update(): void {
-        
+    update() {
     }
-
-    clear(): void {
+    clear() {
         c.clearRect(this.x, this.y, this.w, this.h);
     }
-
-    debug(): void {
+    debug() {
         c.beginPath();
         c.strokeStyle = this.debugColor;
         c.lineWidth = 4;
