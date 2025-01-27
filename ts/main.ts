@@ -2,6 +2,7 @@ import { areas } from "./data/areas.js";
 import { degToRad, radToDeg } from "./functions.js";
 import { init } from "./init.js";
 import { InteractableObject } from "./interactable_object/interactable_object.js";
+import { Item } from "./item.js";
 import { Decoration } from "./objects/decoration.js";
 import { ObjectType } from "./objects/object_type.js";
 import { objects } from "./objects/objects.js";
@@ -83,7 +84,8 @@ async function start(): Promise<void> {
         if (menu) menu.style.display = "none";
     
         player.init();
-        player.teleport(areas.workshop.left() + 530, areas.workshop.bottom() - player.h);
+        player.teleport(areas.workshop_reception.realLeft() + 530, areas.workshop_reception.realBottom() - player.h);
+        // player.items.push(new Item("boss_key", "Key", "key"));
 
         game();
     } catch (error) {

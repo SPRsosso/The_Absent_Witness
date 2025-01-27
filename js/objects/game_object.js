@@ -45,6 +45,6 @@ export class GameObject {
     }
     alignX() {
         this.x -= this.w;
-        this.realY -= this.h;
+        this.realX -= this.w;
     }
 }

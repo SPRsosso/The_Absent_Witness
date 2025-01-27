@@ -71,7 +71,8 @@ function start() {
             if (menu)
                 menu.style.display = "none";
             player.init();
-            player.teleport(areas.workshop.left() + 530, areas.workshop.bottom() - player.h);
+            player.teleport(areas.workshop_reception.realLeft() + 530, areas.workshop_reception.realBottom() - player.h);
+            // player.items.push(new Item("boss_key", "Key", "key"));
             game();
         }
         catch (error) {

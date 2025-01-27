@@ -35,7 +35,7 @@ export class InteractableObject extends GameObject {
         }
     }
     draw() {
-        if (this.texture) {
+        if (this.texture && !this.inspected) {
             const img = loadedAssets.imgs[this.texture];
             c.beginPath();
             c.drawImage(img, this.x, this.y, this.w, this.h);
