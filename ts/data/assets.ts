@@ -15,6 +15,8 @@ export const assetsToPreload: Asset = {
         "slider_thumb": "./imgs/slider_thumb.png",
         "slider_track": "./imgs/slider_track.png",
         "golden_egg": "./imgs/golden_egg.png",
+        "coin": "./imgs/coin.png",
+        "laying_coin": "./imgs/laying_coin.png",
 
         //! ITEMS
         "key": "./imgs/key.png",
@@ -47,11 +49,19 @@ export const assetsToPreload: Asset = {
         "building_2": "./imgs/building_2.png",
         "building_3": "./imgs/building_3.png",
         "building_4": "./imgs/building_4.png",
+        "building_5": "./imgs/building_5.png",
+        "building_6": "./imgs/building_6.png",
         "office_outside": "./imgs/office_outside.png",
         "tree": "./imgs/tree.png",
         "bush_1": "./imgs/bush_1.png",
         "bush_2": "./imgs/bush_2.png",
 
+        //! HOUSE
+        "living_room": "./imgs/hallway_living_room.png",
+        "wooden_floor": "./imgs/wooden_floor.png",
+        "home_door": "./imgs/home_door.png",
+        "house_door_left": "./imgs/house_door_left.png",
+        "house_door_right": "./imgs/house_door_right.png",
 
         "magnifying_glass": "./imgs/magnifying_glass.png",
     },

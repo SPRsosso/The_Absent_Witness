@@ -142,8 +142,10 @@ export function init() {
         receptionDesk.alignY();
         receptionDesk.createInteraction(() => {
             player.say("My wife used to work here.", 1500);
-            player.say("We met here when I got employed. She really liked this job before everything fell apart...", 2500);
-            player.say("She was happy until new boss came and ruined everything...", 2500);
+            player.say("I remember when she came here for the first time. She was full of energy, smiling... She said, that this is new beginning.", 2000);
+            player.say("But... Then new boss got hired.", 1500);
+            player.say("He ruined everything. Layoffs, changes, pressure... Mia saw it every day until she couldn't stand it anymore.", 2000);
+            player.say("And me... I didn't do anything.", 1500);
         });
         const computerBoss = new Decoration(areas.workshop_boss.realLeft() + 300, areas.workshop.realBottom(), 266, 200, "desk_with_computer");
         computerBoss.alignY();
@@ -192,6 +194,21 @@ export function init() {
             openDoor();
             player.teleport(areas.workshop_reception.realLeft(), areas.workshop_reception.realBottom() - player.h);
         });
+        const doorToLivingRoom_FromStreet = new InteractableObject(areas.street.realLeft(), areas.street.realBottom(), 66, 400, 50, "house_door_right");
+        doorToLivingRoom_FromStreet.alignY();
+        doorToLivingRoom_FromStreet.createInteraction(() => {
+            openDoor();
+            player.teleport(areas.house_living_room.realRight(), areas.house_living_room.realBottom() - player.h);
+            player.alignX();
+            setTimeout(() => {
+                player.say("Honey! I'm home!", 2000);
+                player.say("(silence)", 1500);
+                player.say("...", 1500);
+                player.say("Hello? ", 1000);
+                player.say("Are you here?", 1500);
+                player.say("Mia? ", 1000);
+            }, 1000);
+        });
         //! STREET - DECORATIONS
         const buildings = [];
         const officeHeight = 900;
@@ -201,7 +218,7 @@ export function init() {
         officeOutside.alignY();
         const plants = [];
         let nextBuildingX = areas.street.realRight();
-        for (let i = 1; i <= 4; i++) {
+        for (let i = 1; i <= 6; i++) {
             const img = loadedAssets.imgs["building_" + i];
             const resolution = img.width / img.height;
             const height = 900;
@@ -209,6 +226,14 @@ export function init() {
             building.alignX();
             building.alignY();
             nextBuildingX = building.realLeft();
+            if (i === 4) {
+                const coin = new InteractableObject(nextBuildingX, areas.street.realBottom(), 32, 11, 10, "laying_coin", false, false, true);
+                coin.alignY();
+                coin.createInteraction(() => {
+                    coin.inspected = true;
+                    player.items.push(new Item("coin", "50 Cents", "coin"));
+                });
+            }
             buildings.push(building);
         }
         for (let building of buildings) {
@@ -225,6 +250,27 @@ export function init() {
             plants.push(plant);
             plants.push(bush);
         }
+        //! HOUSE - INTERACTABLE OBJECTS
+        const doorToStreet_FromLivingRoom = new InteractableObject(areas.house_living_room.realRight(), areas.house_living_room.realBottom(), 66, 400, 30, "house_door_left");
+        doorToStreet_FromLivingRoom.alignX();
+        doorToStreet_FromLivingRoom.alignY();
+        doorToStreet_FromLivingRoom.createInteraction(() => {
+            player.say("I don't need to go outside...", 2000);
+        });
+        const doorToBedroom = new InteractableObject(areas.house_living_room.realLeft() + 1120, areas.house_living_room.realBottom(), 238, 400, 40, "home_door", true);
+        doorToBedroom.alignY();
+        doorToBedroom.createInteraction(() => {
+            player.say("Locked...", 1500);
+            player.say("Hmm... That's weird, Mia wouldn't close the door without me...", 3000);
+            lockedDoor();
+        });
+        const doorToHallway = new InteractableObject(areas.house_living_room.realLeft(), areas.house_living_room.realBottom(), 66, 400, 30, "house_door_right");
+        doorToHallway.alignY();
+        doorToHallway.createInteraction(() => {
+            lockedDoor();
+            player.say("Locked...", 1500);
+        });
+        //! HOUSE - DECORATIONS
         //! EASTER EGGS
         const easterEgg1 = new InteractableObject(computerBoss.realRight(), computerBoss.realTop() + 35, 32, 32, 10, "golden_egg");
         easterEgg1.alignX();

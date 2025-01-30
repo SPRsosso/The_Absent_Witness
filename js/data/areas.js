@@ -7,7 +7,8 @@ export const areas = {
     workshop_reception: new Area(14000, innerHeight / 2 - 1080 / 4, 1920, 1080 / 2, "blue", "concrete_floor", "office_reception"),
     workshop_second_floor_staircase: new Area(17500, innerHeight / 2 - 1080 / 4, 614, 1080 / 2, "lightblue", "concrete_floor", "staircase_second_floor"),
     workshop_boss: new Area(21000, innerHeight / 2 - 1080 / 4, 960, 1080 / 2, "violet", "concrete_floor", "office_boss"),
-    street: new Area(-3500, innerHeight - 64, 11520, 1080, "green", "pavement"),
+    street: new Area(-3500, innerHeight - 64, 7200, 1080, "green", "pavement"),
+    house_living_room: new Area(-17000, innerHeight / 2 - 1080 / 4, 2400, 1080 / 2, "crimson", "wooden_floor", "living_room")
 };
 areas.street.alignX();
 areas.street.alignY();
