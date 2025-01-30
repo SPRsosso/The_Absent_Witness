@@ -32,3 +32,7 @@ export function circRectCollision(circle: InteractableObject, rect: GameObject) 
     var dy = distY - rect.h / 2;
     return (dx ** 2 + dy ** 2 <= (circle.radius ** 2));
 }
+
+export function randomInt(min: number, max: number) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}

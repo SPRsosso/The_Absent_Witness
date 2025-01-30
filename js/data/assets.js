@@ -9,7 +9,6 @@ export const assetsToPreload = {
         "speaking": "./imgs/speaking.png",
         "slider_thumb": "./imgs/slider_thumb.png",
         "slider_track": "./imgs/slider_track.png",
-        "credits_btn": "./imgs/credits_btn.png",
         "golden_egg": "./imgs/golden_egg.png",
         //! ITEMS
         "key": "./imgs/key.png",
@@ -39,6 +38,11 @@ export const assetsToPreload = {
         "building_1": "./imgs/building_1.png",
         "building_2": "./imgs/building_2.png",
         "building_3": "./imgs/building_3.png",
+        "building_4": "./imgs/building_4.png",
+        "office_outside": "./imgs/office_outside.png",
+        "tree": "./imgs/tree.png",
+        "bush_1": "./imgs/bush_1.png",
+        "bush_2": "./imgs/bush_2.png",
         "magnifying_glass": "./imgs/magnifying_glass.png",
     },
     sounds: {
@@ -49,6 +53,8 @@ export const assetsToPreload = {
         "click": "./sounds/click.mp3",
         "sweeping_garbage": "./sounds/sweeping_garbage.mp3",
         "footsteps": "./sounds/footsteps.mp3",
+        "pickup": "./sounds/pickup.mp3",
+        "vending_machine": "./sounds/vending_machine.mp3",
     }
 };
 export const loadedAssets = {

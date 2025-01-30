@@ -15,6 +15,60 @@
     
     <div class="menu">
         <img class="title" src="./imgs/title.png">
+        
+        <div class="btns">
+            <p class="btn" data-text="start" id="start-btn"></p>
+            <p class="btn settings-btn" data-text="settings"></p>
+            <p class="btn tutorial-btn" data-text="tutorial"></p>
+        </div>
+    </div>
+
+    <div id="pause">
+        <div class="row">
+            <h1 class="title">Pause</h1>
+            <p class="close-btn" id="close-pause-btn">X</p>
+        </div>
+        <div class="btns">
+            <p class="btn settings-btn" data-text="settings"></p>
+            <p class="btn tutorial-btn" data-text="tutorial"></p>
+        </div>
+    </div>
+
+    <div id="settings">
+        <div class="row center">
+            <h1 class="title">Settings</h1>
+            <p class="close-btn" id="close-settings-btn">X</p>
+        </div>
+        <div class="body">
+            <h1>Volume</h1>
+            <div class="slider">
+                <img src="./imgs/slider_thumb.png" id="slider-thumb">
+                <img src="./imgs/slider_track.png" id="slider-track">
+            </div>
+        </div>
+    </div>
+
+    <div id="tutorial">
+        <div class="row center">
+            <h1 class="title">Tutorial</h1>
+            <p class="close-btn" id="close-tutorial-btn">X</p>
+        </div>
+        <div class="body">
+            <p>
+                <div class="key">A</div>
+                <div class="key">D</div>
+                - To move
+            </p>
+            <p>
+                <div class="key">E</div>
+                - To interact
+            </p>
+            <p>
+                <div class="key">_</div>
+                - "Space" to skip dialog
+            </p>
+
+        </div>
     </div>
 
     <script type="module" src="./js/main.js"></script>

@@ -1,8 +1,9 @@
 import { areas } from "./data/areas.js";
 import { loadedAssets } from "./data/assets.js";
+import { randomInt } from "./functions.js";
 import { InteractableObject } from "./interactable_object/interactable_object.js";
 import { Item } from "./item.js";
-import { player } from "./main.js";
+import { player, volume } from "./main.js";
 import { Decoration } from "./objects/decoration.js";
 export function init() {
     return new Promise((resolve, reject) => {
@@ -47,7 +48,7 @@ export function init() {
             const moaiEffect = loadedAssets.sounds["moai"];
             moaiEffect.pause();
             moaiEffect.currentTime = 0;
-            moaiEffect.volume = 0.3;
+            moaiEffect.volume = volume;
             moaiEffect.play();
         });
         const trashcanBathroom = new InteractableObject(areas.workshop_bathroom.realLeft() + 930, areas.workshop_bathroom.realBottom(), 0, 200, 20, null, true, false);
@@ -56,8 +57,9 @@ export function init() {
             const sound = loadedAssets.sounds["sweeping_garbage"];
             sound.pause();
             sound.currentTime = 0;
-            sound.volume = 0.4;
+            sound.volume = volume;
             sound.play();
+            pickup();
             player.items.push(new Item("boss_key", "Key", "key"));
             trashcanBathroom.inspected = true;
             player.say("Yuck! The worst feeling ever... Rummaging through the garbage... But i found something.", 2000);
@@ -77,7 +79,7 @@ export function init() {
                 const sound = loadedAssets.sounds["unlock_door"];
                 sound.pause();
                 sound.currentTime = 0;
-                sound.volume = 0.5;
+                sound.volume = volume;
                 sound.play();
                 doorToBoss.data.open = true;
                 player.items = player.items.filter(item => item.name !== "boss_key");
@@ -99,45 +101,19 @@ export function init() {
         const staircaseDown_FromSecondFloor = new InteractableObject(areas.workshop_second_floor_staircase.realLeft() + 510, areas.workshop_first_floor_staircase.realBottom() - 200, 0, 0, 50, null, true);
         staircaseDown_FromFirstFloor.createInteraction(() => {
             player.teleport(staircaseUp_FromReception.realRight() - player.w / 2, areas.workshop_reception.realBottom() - player.h);
-            const sound = loadedAssets.sounds["footsteps"];
-            sound.pause();
-            sound.currentTime = 0;
-            sound.volume = 0.8;
-            sound.play();
+            walk();
         });
         staircaseUp_FromReception.createInteraction(() => {
             player.teleport(staircaseDown_FromFirstFloor.realLeft() - player.w / 2, areas.workshop_first_floor_staircase.realBottom() - player.h);
-            const sound = loadedAssets.sounds["footsteps"];
-            sound.pause();
-            sound.currentTime = 0;
-            sound.volume = 0.8;
-            sound.play();
+            walk();
         });
         staircaseUp_FromFirstFloor.createInteraction(() => {
             player.teleport(staircaseDown_FromSecondFloor.realLeft() - player.w / 2, areas.workshop_second_floor_staircase.realBottom() - player.h);
-            const sound = loadedAssets.sounds["footsteps"];
-            sound.pause();
-            sound.currentTime = 0;
-            sound.volume = 0.8;
-            sound.play();
+            walk();
         });
         staircaseDown_FromSecondFloor.createInteraction(() => {
             player.teleport(staircaseUp_FromFirstFloor.realLeft() - player.w / 2, areas.workshop_first_floor_staircase.realBottom() - player.h);
-            const sound = loadedAssets.sounds["footsteps"];
-            sound.pause();
-            sound.currentTime = 0;
-            sound.volume = 0.8;
-            sound.play();
-        });
-        const vendingMachine = new InteractableObject(areas.workshop_reception.realLeft() + 350, areas.workshop_reception.realBottom(), 225, 450, 40, "vending_machine", true);
-        vendingMachine.alignY();
-        vendingMachine.createInteraction(() => {
-            if (player.items.some(item => item.name === "coin")) {
-                vendingMachine.inspected = true;
-                player.items = player.items.filter(item => item.name !== "coin");
-                return;
-            }
-            player.say("I don't have any money on me... If I got any...", 2000);
+            walk();
         });
         const doorToStreet = new InteractableObject(areas.workshop_reception.realLeft(), areas.workshop_reception.realBottom(), 66, 400, 40, "door_right");
         doorToStreet.alignY();
@@ -166,7 +142,7 @@ export function init() {
         receptionDesk.alignY();
         receptionDesk.createInteraction(() => {
             player.say("My wife used to work here.", 1500);
-            player.say("We met here when I got employed. She really liked this job before everything fell down...", 2500);
+            player.say("We met here when I got employed. She really liked this job before everything fell apart...", 2500);
             player.say("She was happy until new boss came and ruined everything...", 2500);
         });
         const computerBoss = new Decoration(areas.workshop_boss.realLeft() + 300, areas.workshop.realBottom(), 266, 200, "desk_with_computer");
@@ -217,15 +193,69 @@ export function init() {
             player.teleport(areas.workshop_reception.realLeft(), areas.workshop_reception.realBottom() - player.h);
         });
         //! STREET - DECORATIONS
+        const buildings = [];
+        const officeHeight = 900;
+        const officeResolutionY = loadedAssets.imgs["office_outside"].width / loadedAssets.imgs["office_outside"].height;
+        const officeResolutionX = loadedAssets.imgs["office_outside"].height / loadedAssets.imgs["office_outside"].width;
+        const officeOutside = new Decoration(areas.street.realRight() - 2 * officeResolutionX, areas.street.realBottom(), officeHeight * officeResolutionY, officeHeight, "office_outside");
+        officeOutside.alignY();
+        const plants = [];
+        let nextBuildingX = areas.street.realRight();
+        for (let i = 1; i <= 4; i++) {
+            const img = loadedAssets.imgs["building_" + i];
+            const resolution = img.width / img.height;
+            const height = 900;
+            const building = new Decoration(nextBuildingX, areas.street.realBottom(), resolution * height, height, "building_" + i, true);
+            building.alignX();
+            building.alignY();
+            nextBuildingX = building.realLeft();
+            buildings.push(building);
+        }
+        for (let building of buildings) {
+            const plantImg = loadedAssets.imgs["tree"];
+            const plantWidth = 300;
+            const plantResolution = plantImg.height / plantImg.width;
+            const plant = new Decoration(building.realLeft() - plantWidth / 2, areas.street.realBottom(), plantWidth, plantWidth * plantResolution, "tree", true);
+            plant.alignY();
+            const randomBush = "bush_" + randomInt(1, 2);
+            const bushImg = loadedAssets.imgs[randomBush];
+            const bushResolution = bushImg.height / bushImg.width;
+            const bush = new Decoration(building.realLeft() + building.w / 2 - plantWidth / 2 + randomInt(-100, 100), areas.street.realBottom(), plantWidth, plantWidth * bushResolution, randomBush);
+            bush.alignY();
+            plants.push(plant);
+            plants.push(bush);
+        }
         //! EASTER EGGS
         const easterEgg1 = new InteractableObject(computerBoss.realRight(), computerBoss.realTop() + 35, 32, 32, 10, "golden_egg");
         easterEgg1.alignX();
         easterEgg1.createInteraction(() => {
             easterEgg1.inspected = true;
             player.items.push(new Item("easter_egg", "Golden Egg", "golden_egg"));
-            if (player.items.reduce((total, item) => item.name === "easter_egg" ? total + 1 : total, 0) === 3) {
-                player.say("Found all golden eggs! Good job!", 2000);
+            pickup();
+            checkEasterEggs();
+        });
+        const vendingMachine = new InteractableObject(areas.workshop_reception.realLeft() + 350, areas.workshop_reception.realBottom(), 225, 450, 40, "vending_machine", true, true, false);
+        vendingMachine.alignY();
+        vendingMachine.createInteraction(() => {
+            if (player.items.some(item => item.name === "coin")) {
+                vendingMachine.inspected = true;
+                player.items = player.items.filter(item => item.name !== "coin");
+                pickup();
+                const sound = loadedAssets.sounds["vending_machine"];
+                sound.volume = volume;
+                sound.play();
+                const easterEgg2 = new InteractableObject(vendingMachine.right() - 115, vendingMachine.bottom() - 80, 32, 32, 10, "golden_egg", true);
+                easterEgg2.alignX();
+                easterEgg2.alignY();
+                easterEgg2.createInteraction(() => {
+                    player.items.push(new Item("easter_egg", "Golden Egg", "golden_egg"));
+                    easterEgg2.inspected = true;
+                    pickup();
+                    checkEasterEggs();
+                });
+                return;
             }
+            player.say("I don't have any money on me... If I got any...", 2000);
         });
         resolve();
     });
@@ -234,13 +264,32 @@ function openDoor() {
     const open = loadedAssets.sounds["open_door"];
     open.pause();
     open.currentTime = 0;
-    open.volume = 0.3;
+    open.volume = volume;
     open.play();
 }
 function lockedDoor() {
     const sound = loadedAssets.sounds["locked_door"];
     sound.pause();
     sound.currentTime = 0;
-    sound.volume = 0.2;
+    sound.volume = volume;
+    sound.play();
+}
+function checkEasterEggs() {
+    if (player.items.reduce((total, item) => item.name === "easter_egg" ? total + 1 : total, 0) === 3) {
+        player.say("Found all golden eggs! Good job!", 2000);
+    }
+}
+function pickup() {
+    const sound = loadedAssets.sounds["pickup"];
+    sound.pause();
+    sound.currentTime = 0;
+    sound.volume = volume;
+    sound.play();
+}
+function walk() {
+    const sound = loadedAssets.sounds["footsteps"];
+    sound.pause();
+    sound.currentTime = 0;
+    sound.volume = volume;
     sound.play();
 }

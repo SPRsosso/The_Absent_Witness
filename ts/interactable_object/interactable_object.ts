@@ -17,10 +17,11 @@ export class InteractableObject extends GameObject {
     interaction: () => void;
 
     inspectRendering: boolean = true;
+    removeAfterInspect: boolean = true;
 
     data: any;
 
-    constructor(x: number, y: number, w: number, h: number, radius: number, texture: string | null = null, backdropRendering: boolean = false, inspectRendering: boolean = true) {
+    constructor(x: number, y: number, w: number, h: number, radius: number, texture: string | null = null, backdropRendering: boolean = false, inspectRendering: boolean = true, removeAfterInspect: boolean = true) {
         super(x, y, w, h, backdropRendering, ObjectType.InteractableObject);
         this.texture = texture;
         this.radius = radius;
@@ -28,6 +29,7 @@ export class InteractableObject extends GameObject {
         this.collisionY = this.top() + this.h / 2;
         this.interaction = () => {}
         this.inspectRendering = inspectRendering;
+        this.removeAfterInspect = removeAfterInspect;
 
         objects.push(this);
     }
@@ -52,11 +54,20 @@ export class InteractableObject extends GameObject {
     }
 
     draw(): void {
-        if (this.texture && !this.inspected) {
-            const img = loadedAssets.imgs[this.texture];
-
-            c.beginPath();
-            c.drawImage(img, this.x, this.y, this.w, this.h);
+        if (this.texture) {
+            if (!this.removeAfterInspect) {
+                const img = loadedAssets.imgs[this.texture];
+    
+                c.beginPath();
+                c.drawImage(img, this.x, this.y, this.w, this.h);
+            } else {
+                if (!this.inspected) {
+                    const img = loadedAssets.imgs[this.texture];
+    
+                    c.beginPath();
+                    c.drawImage(img, this.x, this.y, this.w, this.h);
+                }
+            }
         }
 
         if (this.canInteract && this.inspectRendering) {

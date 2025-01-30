@@ -1,6 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=Jersey+10&display=swap');
+
 * {
     margin: 0;
-    font-family: system-ui;
+    font-family: "Jersey 10", serif;
+    font-weight: 400;
+    font-style: normal;
+    letter-spacing: 0.1rem;
 }
 
 *,
@@ -8,6 +13,12 @@
 *::after {
     box-sizing: border-box;
     image-rendering: pixelated;
+
+    user-select: none;
+    -webkit-user-drag: none;
+    -khtml-user-drag: none;
+    -moz-user-drag: none;
+    -o-user-drag: none;
 }
 
 body {
@@ -24,8 +35,7 @@ canvas {
 
 .dialog-text {
     padding: 10px;
-    font-size: 28px;
-    font-family: monospace;
+    font-size: 32px;
 
     position: absolute;
     bottom: 0;
@@ -44,21 +54,59 @@ canvas {
     left: 0;
     z-index: 1;
 
-    background-image: url("../imgs/background_menu.png");
+    /* background-image: url("../imgs/background_menu.png");
     background-repeat: no-repeat;
-    background-size: cover;
+    background-size: cover; */
+
+    .btns {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        translate: -50% -50%;
+    }
+
+    .btn {
+        color: #970000;
+        font-size: 64px;
+
+        width: max-content;
+        margin: auto;
+
+        text-transform: capitalize;
+
+        display: grid;
+
+        cursor: pointer;
+    }
+
+    .btn::before {
+        grid-area: 1/1/-1/-1;
+        content: attr(data-text);
+        clip-path: polygon(0% 0%, 100% 0%, 100% 48%, 0% 58%);
+    
+        transition: 0.3s;
+    }
+    
+    .btn::after {
+        grid-area: 1/1/-1/-1;
+        content: attr(data-text);
+        clip-path: polygon(0% 58%, 100% 48%, 100% 100%, 0% 100%);
+    
+        transition: 0.3s;
+    }
+
+    .btn:hover::before {
+        transform: translateX(5px);
+    }
+    
+    .btn:hover::after {
+        transform: translateX(-5px);
+    }
 }
 
 .title {
-    background-color: rgba(0, 0, 0, 0.2);
-    backdrop-filter: blur(10px);
     width: 100%;
     padding: 50px 25%;
-
-    position: absolute;
-    top: 0;
-    left: 50%;
-    translate: -50% 0;
 }
 
 .items {
@@ -94,3 +142,134 @@ canvas {
     }
 }
 
+#settings,
+#tutorial,
+#pause {
+    z-index: 2;
+    color: #970000;
+    background-color: black;
+    border: 1px solid #970000;
+    width: max-content;
+    display: none;
+    padding: 0 100px;
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    translate: -50% -50%;
+    
+    * {
+        font-size: 48px;
+    }
+
+    .title, .close-btn {
+        font-size: 64px;
+        padding: 20px;
+        text-align: center;
+    }
+
+    .close-btn {
+        cursor: pointer;
+    }
+
+    .body {
+        padding: 20px 50px;
+    }
+}
+
+.row {
+    display: flex;
+}
+
+.center {
+    align-items: center;
+    justify-content: center;
+}
+
+.slider {
+    --slider-height: 30px;
+    width: 100%;
+    height: var(--slider-height);
+
+    position: relative;
+
+    img {
+        position: absolute;
+        top: 0;
+        left: 0;
+    
+        &:first-child {
+            z-index: 1;
+            height: var(--slider-height);
+        }
+
+        &:last-child {
+            width: 100%;
+            top: 50%;
+            translate: 0 -50%;
+        }
+    }
+}
+
+.btn {
+    color: #970000;
+    font-size: 32px;
+
+    width: max-content;
+    margin: auto;
+
+    text-transform: capitalize;
+
+    display: grid;
+
+    cursor: pointer;
+}
+
+.btn::before {
+    grid-area: 1/1/-1/-1;
+    content: attr(data-text);
+    clip-path: polygon(0% 0%, 100% 0%, 100% 48%, 0% 58%);
+
+    transition: 0.3s;
+}
+
+.btn::after {
+    grid-area: 1/1/-1/-1;
+    content: attr(data-text);
+    clip-path: polygon(0% 58%, 100% 48%, 100% 100%, 0% 100%);
+
+    transition: 0.3s;
+}
+
+.btn:hover::before {
+    transform: translateX(5px);
+}
+
+.btn:hover::after {
+    transform: translateX(-5px);
+}
+
+#tutorial {
+    .body {
+        p {
+            margin-bottom: 10px;
+        }
+    }
+}
+
+.key {
+    display: inline-block;
+    padding: 10px;
+    width: 75px;
+
+    border: 3px solid #970000;
+    border-radius: 10px;
+
+    text-align: center;
+
+    aspect-ratio: 1 / 1;
+}
+
+#pause {
+    padding-bottom: 25px;
+}

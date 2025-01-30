@@ -6,7 +6,7 @@ import { Dialog } from "./dialog/dialog.js";
 import { rectRectCollision } from "./functions.js";
 import { InteractableObject } from "./interactable_object/interactable_object.js";
 import { Item } from "./item.js";
-import { c, canvas, dt, gravity, items } from "./main.js";
+import { c, canvas, closeModal, dt, gravity, items, openModal, volume } from "./main.js";
 import { GameObject } from "./objects/game_object.js";
 import { ObjectType } from "./objects/object_type.js";
 import { objects } from "./objects/objects.js";
@@ -44,6 +44,18 @@ export class Player extends GameObject {
 
     init() {
         addEventListener("keydown", ( e ) => {
+            // ESCAPE - PAUSE
+            if (e.keyCode === 27) {
+                if (document.querySelector<HTMLDivElement>("#pause")?.style.display === "block") {
+                    closeModal("pause");
+                } else {
+                    openModal("pause");
+                }
+            }
+
+            if (document.querySelector<HTMLDivElement>("#pause")?.style.display === "block")
+                return;
+
             // LEFT
             if (e.keyCode === 65) {
                 this.keyDown.push(Key.LEFT);
@@ -245,7 +257,7 @@ export class Player extends GameObject {
                 sound.pause();
                 sound.currentTime = 0;
 
-                sound.volume = 0.3;
+                sound.volume = volume;
                 sound.play();
 
                 this.saidDialog.dialog += this.dialogs[0].dialog[index++];

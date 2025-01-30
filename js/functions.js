@@ -29,3 +29,6 @@ export function circRectCollision(circle, rect) {
     var dy = distY - rect.h / 2;
     return (Math.pow(dx, 2) + Math.pow(dy, 2) <= (Math.pow(circle.radius, 2)));
 }
+export function randomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}

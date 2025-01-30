@@ -2,7 +2,7 @@ import { areas } from "./data/areas.js";
 import { loadedAssets } from "./data/assets.js";
 import { Key } from "./data/keys.js";
 import { rectRectCollision } from "./functions.js";
-import { c, canvas, dt, gravity, items } from "./main.js";
+import { c, canvas, closeModal, dt, gravity, items, openModal, volume } from "./main.js";
 import { GameObject } from "./objects/game_object.js";
 import { ObjectType } from "./objects/object_type.js";
 import { objects } from "./objects/objects.js";
@@ -23,7 +23,18 @@ export class Player extends GameObject {
     }
     init() {
         addEventListener("keydown", (e) => {
-            var _a, _b, _c, _d;
+            var _a, _b, _c, _d, _e, _f;
+            // ESCAPE - PAUSE
+            if (e.keyCode === 27) {
+                if (((_a = document.querySelector("#pause")) === null || _a === void 0 ? void 0 : _a.style.display) === "block") {
+                    closeModal("pause");
+                }
+                else {
+                    openModal("pause");
+                }
+            }
+            if (((_b = document.querySelector("#pause")) === null || _b === void 0 ? void 0 : _b.style.display) === "block")
+                return;
             // LEFT
             if (e.keyCode === 65) {
                 this.keyDown.push(Key.LEFT);
@@ -51,10 +62,10 @@ export class Player extends GameObject {
             }
             //! DEBUG
             if (e.keyCode === 190) {
-                this.teleport(parseFloat((_a = prompt("X: ")) !== null && _a !== void 0 ? _a : "0"), parseFloat((_b = prompt("Y: ")) !== null && _b !== void 0 ? _b : "0"));
+                this.teleport(parseFloat((_c = prompt("X: ")) !== null && _c !== void 0 ? _c : "0"), parseFloat((_d = prompt("Y: ")) !== null && _d !== void 0 ? _d : "0"));
             }
             if (e.keyCode === 191) {
-                this.say((_c = prompt("Text: ")) !== null && _c !== void 0 ? _c : "Hello, World!", parseInt((_d = prompt("Show time:")) !== null && _d !== void 0 ? _d : "1000"));
+                this.say((_e = prompt("Text: ")) !== null && _e !== void 0 ? _e : "Hello, World!", parseInt((_f = prompt("Show time:")) !== null && _f !== void 0 ? _f : "1000"));
             }
         });
         addEventListener("keyup", (e) => {
@@ -206,7 +217,7 @@ export class Player extends GameObject {
                 const sound = loadedAssets.sounds["click"];
                 sound.pause();
                 sound.currentTime = 0;
-                sound.volume = 0.3;
+                sound.volume = volume;
                 sound.play();
                 this.saidDialog.dialog += this.dialogs[0].dialog[index++];
                 wait = true;
