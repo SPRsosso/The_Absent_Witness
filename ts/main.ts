@@ -11,7 +11,7 @@ import { preloadAssets } from "./preload.js";
 
 export const gravity = 0.1;
 
-export let volume = 0.4;
+export let volume = 0.1;
 
 export const canvas: HTMLCanvasElement = document.getElementById("canvas") as HTMLCanvasElement;
 canvas.width = innerWidth;
@@ -86,7 +86,7 @@ async function start(): Promise<void> {
         if (menu) menu.style.display = "none";
     
         player.init();
-        player.teleport(areas.workshop_reception.realLeft() + 530, areas.workshop_reception.realBottom() - player.h);
+        player.teleport(areas.workshop.realLeft() + 530, areas.workshop.realBottom() - player.h);
         // player.items.push(new Item("coin", "50 Cents", "key"));
 
         game();

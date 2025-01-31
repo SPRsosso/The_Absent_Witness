@@ -35,6 +35,7 @@ export const assetsToPreload: Asset = {
         "water_cooler": "./imgs/water_cooler.png",
         "staircase_first_floor": "./imgs/staircase_first_floor.png",
         "staircase_second_floor": "./imgs/staircase_second_floor.png",
+        "stack_of_paper": "./imgs/stack_of_paper.png",
         //? OFFICE BATHROOM
         "workshop_bathroom_background": "./imgs/workshop_bathroom_background.png",
         "bathroom_floor": "./imgs/bathroom_floor.png",
@@ -55,6 +56,7 @@ export const assetsToPreload: Asset = {
         "tree": "./imgs/tree.png",
         "bush_1": "./imgs/bush_1.png",
         "bush_2": "./imgs/bush_2.png",
+        "house_outside": "./imgs/house_outside.png",
 
         //! HOUSE
         "living_room": "./imgs/hallway_living_room.png",
@@ -62,6 +64,9 @@ export const assetsToPreload: Asset = {
         "home_door": "./imgs/home_door.png",
         "house_door_left": "./imgs/house_door_left.png",
         "house_door_right": "./imgs/house_door_right.png",
+        "perfume": "./imgs/perfume.png",
+        "damaged_mug": "./imgs/damaged_mug.png",
+        "vinyl_record": "./imgs/vinyl_record.png",
 
         "magnifying_glass": "./imgs/magnifying_glass.png",
     },

@@ -209,12 +209,13 @@ export function init(): Promise<void> {
 
         const schedule = new InteractableObject(areas.workshop.realLeft() + 180, areas.workshop.realTop() + 260, 0, 0, 40, null, true);
         schedule.createInteraction(() => {
-            player.say("Our schedule, I work in the evenings... I hate it...", 2000);
+            player.say("Sure. Who's staying up late again? Me. Who gets up well rested in the morning? Certainly not me.", 2000);
+            player.say("I don't know why I even try...", 1500);
         });
 
         const bestEmployees = new InteractableObject(areas.workshop.realLeft() + 380, areas.workshop.realTop() + 260, 0, 0, 40, null, true);
         bestEmployees.createInteraction(() => {
-            player.say("Employees of the month. My colleagues, Adam and Samantha. I should be there, I'm working after-hours...", 3000);
+            player.say("Here you go... The best employees of the month. And no, not me.", 2000);
         });
 
         const clock = new InteractableObject(areas.workshop.realLeft() + 910, areas.workshop.realTop() + 130, 0, 0, 70, null, true);
@@ -227,6 +228,13 @@ export function init(): Promise<void> {
         lockedDoorSecondFloor.createInteraction(() => {
             player.say("Locked...", 1500);
             lockedDoor();
+        });
+
+        const stackOfPaper = new InteractableObject(areas.workshop.realLeft() + 720, areas.workshop.realBottom() - 134, 54, 42, 20, "stack_of_paper", false);
+        stackOfPaper.alignY();
+        stackOfPaper.createInteraction(() => {
+            player.say("Next night, next stacks of paper. I don't even know when was the last time I finished work at a normal time.", 2000);
+            player.say("I wonder if they even realize how much it is. They probably don't even have to worry about it.", 2000);
         });
 
         //! STREET
@@ -266,6 +274,9 @@ export function init(): Promise<void> {
 
         const officeOutside = new Decoration(areas.street.realRight() - 2 * officeResolutionX, areas.street.realBottom(), officeHeight * officeResolutionY, officeHeight, "office_outside");
         officeOutside.alignY();
+        const houseOutside = new Decoration(areas.street.realLeft() + 2 * officeResolutionX, areas.street.realBottom(), officeHeight * officeResolutionY, officeHeight, "house_outside");
+        houseOutside.alignX();
+        houseOutside.alignY();
 
         const plants: Decoration[] = [];
         let nextBuildingX = areas.street.realRight();
@@ -318,7 +329,7 @@ export function init(): Promise<void> {
             player.say("I don't need to go outside...", 2000);
         });
 
-        const doorToBedroom = new InteractableObject(areas.house_living_room.realLeft() + 1120, areas.house_living_room.realBottom(),  238, 400, 40, "home_door", true);
+        const doorToBedroom = new InteractableObject(areas.house_living_room.realLeft() + 1120, areas.house_living_room.realBottom(),  238, 400, 20, "home_door", true);
         doorToBedroom.alignY();
         doorToBedroom.createInteraction(() => {
             player.say("Locked...", 1500);
@@ -335,7 +346,28 @@ export function init(): Promise<void> {
         });
 
         //! HOUSE - DECORATIONS
+        const vinylRecord = new InteractableObject(areas.house_living_room.realLeft() + 930, areas.house_living_room.realTop() + 100, 128, 128, 50, "vinyl_record", true);
+        vinylRecord.createInteraction(() => {
+            player.say("We played it many times... We always danced to it even if we were exhausted after a whole day.", 2000);
+            player.say("Mia always said that I have two left feet. Maybe she was right. But she never let me sit down - 'Music is for feeling'.", 2000);
+            player.say("I don't remember the last time I played it.", 1500);
+        });
 
+        const damagedMug = new InteractableObject(areas.house_living_room.realLeft() + 180, areas.house_living_room.realBottom() - 100, 55, 48, 50, "damaged_mug", true);
+        damagedMug.alignY();
+        damagedMug.createInteraction(() => {
+            player.say("Her favorite. Broke, when she tried to pretend that she could juggle cups", 2000);
+            player.say("She was always overconfident when it came to stupid things.", 2000);
+            player.say("I wanted to throw it away, but she wouldn't let me. 'It has a crack but still works' - she said", 2000);
+            player.say("Now somehow... I understand what she meant.", 2000);
+        });
+
+        const perfume = new InteractableObject(areas.house_living_room.realRight() - 350, areas.house_living_room.realBottom() - 210, 22, 44, 20, "perfume", true);
+        perfume.alignY();
+        perfume.createInteraction(() => {
+            player.say("She always smelled with this. Even when she got bored, Mia kept coming back to that smell.", 2500);
+            player.say("I always knew when she was close by. All you had to do is to close your eyes and... She was here.", 2500);
+        });
 
         //! EASTER EGGS
         const easterEgg1 = new InteractableObject(computerBoss.realRight(), computerBoss.realTop() + 35, 32, 32, 10, "golden_egg");
