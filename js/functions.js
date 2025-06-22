@@ -32,3 +32,12 @@ export function circRectCollision(circle, rect) {
 export function randomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
+export function clamp(n, min, max) {
+    return n < min ? min : (n > max ? max : n);
+}
+export function isAudioPlaying(audio) {
+    return (audio.currentTime > 0 &&
+        !audio.paused &&
+        !audio.ended &&
+        audio.readyState >= 3);
+}

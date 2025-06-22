@@ -8,8 +8,10 @@ export abstract class GameObject {
     w: number;
     h: number;
     backdropRendering: boolean;
+    data: { [key: string]: unknown } = {};
 
     type: ObjectType;
+
 
     constructor(x: number, y: number, w: number, h: number, backdropRendering: boolean, type: ObjectType) {
         this.x = x;
@@ -32,6 +34,13 @@ export abstract class GameObject {
     abstract draw(): void;
     abstract debug(): void;
 
+    contains(object: GameObject): boolean {
+        return object.realRight() > this.realLeft() 
+            && object.realLeft() < this.realRight()
+            && object.realTop() < this.realBottom() 
+            && object.realBottom() > this.realTop();
+    }
+    
     top(): number {
         return this.y;
     }

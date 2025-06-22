@@ -1,4 +1,4 @@
-interface Asset {
+export interface Asset {
     imgs: { [key: string]: any },
     sounds: { [key: string]: any },
 }
@@ -61,14 +61,20 @@ export const assetsToPreload: Asset = {
         //! HOUSE
         "living_room": "./imgs/hallway_living_room.png",
         "wooden_floor": "./imgs/wooden_floor.png",
-        "home_door": "./imgs/home_door.png",
+        "house_door": "./imgs/home_door.png",
         "house_door_left": "./imgs/house_door_left.png",
         "house_door_right": "./imgs/house_door_right.png",
         "perfume": "./imgs/perfume.png",
         "damaged_mug": "./imgs/damaged_mug.png",
         "vinyl_record": "./imgs/vinyl_record.png",
-
+        "house_corridor": "./imgs/house_corridor.png",
+        "kitchen_table": "./imgs/kitchen_table.png",
+        "basement_corridor": "./imgs/basement_corridor.png",
+        "house_bathroom": "./imgs/house_bathroom.png",
+        
         "magnifying_glass": "./imgs/magnifying_glass.png",
+        "flashlight_item": "./imgs/flashlight_item.png",
+        "battery_item": "./imgs/battery_item.png",
     },
     sounds: {
         "moai": "./sounds/moai.mp3",

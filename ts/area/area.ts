@@ -8,11 +8,13 @@ export class Area extends GameObject {
     debugColor: string = "red";
     backgroundTexture: string | null = null;
     floorTexture: string | null = null;
+    floorScale: number = 4;
+
     constructor(x: number, y: number, w: number, h: number, debugColor: string, floorTexture: string | null = null, backgroundTexture: string | null = null) {
         super(x, y, w, h, false, ObjectType.Area);
         this.floorTexture = floorTexture;
         this.backgroundTexture = backgroundTexture;
-        
+
         this.debugColor = debugColor;
 
         objects.push(this);
@@ -20,16 +22,17 @@ export class Area extends GameObject {
 
     draw(): void {
         if (this.floorTexture) {
-            const img: HTMLImageElement = loadedAssets.imgs[this.floorTexture];
+            const img: HTMLImageElement | undefined = loadedAssets.imgs[this.floorTexture];
 
-            const imgScale = 4;
-            const imgWidth = img.width * imgScale;
-            for (let i = 0; i < this.w + imgWidth; i += imgWidth) {
-                c.beginPath();
-                if (this.w - i - imgWidth > 0) {
-                    c.drawImage(img, this.x + i, this.bottom(), imgWidth, imgWidth);
-                } else {
-                    c.drawImage(img, 0, 0, (this.w - i) / imgScale, img.height, this.x + i, this.bottom(), (this.w - i), imgWidth);
+            if (img) {
+                const imgWidth = img.width * this.floorScale;
+                for (let i = 0; i < this.w + imgWidth; i += imgWidth) {
+                    c.beginPath();
+                    if (this.w - i - imgWidth > 0) {
+                        c.drawImage(img, this.x + i, this.bottom(), imgWidth, imgWidth);
+                    } else {
+                        c.drawImage(img, 0, 0, (this.w - i) / this.floorScale, img.height, this.x + i, this.bottom(), (this.w - i), imgWidth);
+                    }
                 }
             }
         }
@@ -42,9 +45,7 @@ export class Area extends GameObject {
         }
     }
 
-    update(): void {
-        
-    }
+    update(): void {}
 
     clear(): void {
         c.clearRect(this.x, this.y, this.w, this.h);

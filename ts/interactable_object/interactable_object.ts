@@ -16,10 +16,9 @@ export class InteractableObject extends GameObject {
     canInteract: boolean = false;
     interaction: () => void;
 
+    inspectRadius: number = 32;
     inspectRendering: boolean = true;
     removeAfterInspect: boolean = true;
-
-    data: any;
 
     constructor(x: number, y: number, w: number, h: number, radius: number, texture: string | null = null, backdropRendering: boolean = false, inspectRendering: boolean = true, removeAfterInspect: boolean = true) {
         super(x, y, w, h, backdropRendering, ObjectType.InteractableObject);
@@ -27,7 +26,7 @@ export class InteractableObject extends GameObject {
         this.radius = radius;
         this.collisionX = this.left() + this.w / 2;
         this.collisionY = this.top() + this.h / 2;
-        this.interaction = () => {}
+        this.interaction = () => {};
         this.inspectRendering = inspectRendering;
         this.removeAfterInspect = removeAfterInspect;
 
@@ -72,8 +71,8 @@ export class InteractableObject extends GameObject {
 
         if (this.canInteract && this.inspectRendering) {
             const img = loadedAssets.imgs["magnifying_glass"];
-            const sizeW = 64;
-            const sizeH = 64;
+            const sizeW = this.inspectRadius * 2;
+            const sizeH = this.inspectRadius * 2;
             c.beginPath();
             c.drawImage(img, this.collisionX - sizeW / 2, this.collisionY - sizeH / 2, sizeW, sizeH);
         }

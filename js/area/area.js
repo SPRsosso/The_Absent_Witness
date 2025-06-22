@@ -9,6 +9,7 @@ export class Area extends GameObject {
         this.debugColor = "red";
         this.backgroundTexture = null;
         this.floorTexture = null;
+        this.floorScale = 4;
         this.floorTexture = floorTexture;
         this.backgroundTexture = backgroundTexture;
         this.debugColor = debugColor;
@@ -17,15 +18,16 @@ export class Area extends GameObject {
     draw() {
         if (this.floorTexture) {
             const img = loadedAssets.imgs[this.floorTexture];
-            const imgScale = 4;
-            const imgWidth = img.width * imgScale;
-            for (let i = 0; i < this.w + imgWidth; i += imgWidth) {
-                c.beginPath();
-                if (this.w - i - imgWidth > 0) {
-                    c.drawImage(img, this.x + i, this.bottom(), imgWidth, imgWidth);
-                }
-                else {
-                    c.drawImage(img, 0, 0, (this.w - i) / imgScale, img.height, this.x + i, this.bottom(), (this.w - i), imgWidth);
+            if (img) {
+                const imgWidth = img.width * this.floorScale;
+                for (let i = 0; i < this.w + imgWidth; i += imgWidth) {
+                    c.beginPath();
+                    if (this.w - i - imgWidth > 0) {
+                        c.drawImage(img, this.x + i, this.bottom(), imgWidth, imgWidth);
+                    }
+                    else {
+                        c.drawImage(img, 0, 0, (this.w - i) / this.floorScale, img.height, this.x + i, this.bottom(), (this.w - i), imgWidth);
+                    }
                 }
             }
         }
@@ -35,8 +37,7 @@ export class Area extends GameObject {
             c.drawImage(img, this.x, this.y, this.w, this.h);
         }
     }
-    update() {
-    }
+    update() { }
     clear() {
         c.clearRect(this.x, this.y, this.w, this.h);
     }

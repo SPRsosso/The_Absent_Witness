@@ -9,9 +9,6 @@
 <body>
     <canvas id="canvas"></canvas>
     <p class="dialog-text"></p>
-
-    <div class="items">
-    </div>
     
     <div class="menu">
         <img class="title" src="./imgs/title.png">
@@ -54,20 +51,32 @@
             <p class="close-btn" id="close-tutorial-btn">X</p>
         </div>
         <div class="body">
-            <p>
-                <div class="key">A</div>
-                <div class="key">D</div>
+            <p class="key-paragraph">
+                <span class="key">A</span>
+                <span class="key">D</span>
                 - To move
             </p>
-            <p>
-                <div class="key">E</div>
+            <p class="key-paragraph">
+                <span class="key"><img src="./imgs/left_click.png"></span>
                 - To interact
             </p>
-            <p>
-                <div class="key">_</div>
+            <p class="key-paragraph">
+                <span class="key">E</span>
+                - To open inventory
+            </p>
+            <p class="key-paragraph">
+                <span class="key">_</span>
                 - "Space" to skip dialog
             </p>
+        </div>
+    </div>
 
+    <div class="inventory-wrapper">
+        <div class="inventory-body">
+            <h1>Inventory</h1>
+            <div class="inventory">
+        
+            </div>
         </div>
     </div>
 

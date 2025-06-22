@@ -36,3 +36,16 @@ export function circRectCollision(circle: InteractableObject, rect: GameObject) 
 export function randomInt(min: number, max: number) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
+
+export function clamp(n: number, min: number, max: number) {
+    return n < min ? min : (n > max ? max : n);
+}
+
+export function isAudioPlaying(audio: HTMLAudioElement) {
+    return (
+        audio.currentTime > 0 &&
+        !audio.paused &&
+        !audio.ended &&
+        audio.readyState >= 3
+    )
+}

@@ -1,8 +1,9 @@
 import { areas } from "./data/areas.js";
 import { loadedAssets } from "./data/assets.js";
 import { Key } from "./data/keys.js";
-import { rectRectCollision } from "./functions.js";
-import { c, canvas, closeModal, dt, gravity, items, openModal, volume } from "./main.js";
+import { isAudioPlaying, rectRectCollision } from "./functions.js";
+import { Inventory } from "./inventory/inventory.js";
+import { c, canvas, closeModal, dt, gravity, openModal, volume } from "./main.js";
 import { GameObject } from "./objects/game_object.js";
 import { ObjectType } from "./objects/object_type.js";
 import { objects } from "./objects/objects.js";
@@ -14,7 +15,10 @@ export class Player extends GameObject {
         this.dialogs = [];
         this.saidDialog = { dialog: "" };
         this.waitDialog = false;
-        this.items = [];
+        this.animateTimeout = undefined;
+        this.flashlightPower = 96;
+        this.flashlightEvent = undefined;
+        this.inventory = new Inventory(3, 9);
         this.v = new Vector(0, 0);
         this.keyDown = [];
         this.direction = "right";
@@ -26,14 +30,16 @@ export class Player extends GameObject {
             var _a, _b, _c, _d, _e, _f;
             // ESCAPE - PAUSE
             if (e.keyCode === 27) {
-                if (((_a = document.querySelector("#pause")) === null || _a === void 0 ? void 0 : _a.style.display) === "block") {
+                if (((_a = document.querySelector("#pause")) === null || _a === void 0 ? void 0 : _a.style.visibility) === "visible") {
                     closeModal("pause");
+                    closeModal("settings");
+                    closeModal("tutorial");
                 }
                 else {
                     openModal("pause");
                 }
             }
-            if (((_b = document.querySelector("#pause")) === null || _b === void 0 ? void 0 : _b.style.display) === "block")
+            if (((_b = document.querySelector("#pause")) === null || _b === void 0 ? void 0 : _b.style.visibility) === "visible")
                 return;
             // LEFT
             if (e.keyCode === 65) {
@@ -45,14 +51,7 @@ export class Player extends GameObject {
             }
             // 'E' PRESSED
             if (e.keyCode === 69) {
-                for (let obj of objects) {
-                    if (obj.type === ObjectType.InteractableObject) {
-                        const interactable = obj;
-                        if (interactable.canInteract) {
-                            interactable.interact();
-                        }
-                    }
-                }
+                this.inventory.isOpen ? this.inventory.close() : this.inventory.open();
             }
             // 'SPACE' - SKIP DIALOG
             if (e.keyCode === 32) {
@@ -76,6 +75,27 @@ export class Player extends GameObject {
             // RIGHT
             if (e.keyCode === 68) {
                 this.keyDown = this.keyDown.filter(key => key !== Key.RIGHT);
+            }
+        });
+        canvas.addEventListener("click", (event) => {
+            const pos = new Vector(event.clientX, event.clientY);
+            for (let obj of objects) {
+                if (obj.type === ObjectType.InteractableObject) {
+                    const interactable = obj;
+                    if (interactable.canInteract &&
+                        Math.pow((pos.x - interactable.collisionX), 2) + Math.pow((pos.y - interactable.collisionY), 2) < Math.pow(interactable.inspectRadius, 2)) {
+                        interactable.interact();
+                    }
+                }
+            }
+        });
+        addEventListener("mousemove", (event) => {
+            const flashlight = this.inventory.get("flashlight");
+            if (flashlight) {
+                this.flashlightEvent = { x: event.clientX, y: event.clientY };
+            }
+            else {
+                this.flashlightEvent = undefined;
             }
         });
     }
@@ -127,6 +147,8 @@ export class Player extends GameObject {
     }
     draw() {
         this.animation.next();
+    }
+    showDialog() {
         const dialogElement = document.querySelector(".dialog-text");
         if (dialogElement)
             dialogElement.innerText = "";
@@ -157,17 +179,6 @@ export class Player extends GameObject {
                 dialogElement.innerText = this.saidDialog.dialog;
             }
         }
-        items.innerHTML = "";
-        this.items.forEach(item => {
-            const itemElement = document.createElement("div");
-            itemElement.classList.add("item");
-            if (item.texture) {
-                const img = loadedAssets.imgs[item.texture];
-                itemElement.appendChild(img);
-            }
-            itemElement.innerHTML += `<p>${item.displayName}</p>`;
-            items.appendChild(itemElement);
-        });
     }
     teleport(x, y) {
         const diffX = this.realX - x;
@@ -215,7 +226,8 @@ export class Player extends GameObject {
         while (true) {
             if (!wait) {
                 const sound = loadedAssets.sounds["click"];
-                sound.pause();
+                if (isAudioPlaying(sound))
+                    sound.pause();
                 sound.currentTime = 0;
                 sound.volume = volume;
                 sound.play();
@@ -232,17 +244,26 @@ export class Player extends GameObject {
         let posX = 0;
         let wait = false;
         let waitTime = 1000;
+        let beforeTexture = "";
         while (true) {
             let x = posX * w;
             let img;
+            let currentTexture = "";
             if (this.v.x !== 0) {
-                img = loadedAssets.imgs["player_walking_" + this.direction];
+                currentTexture = "player_walking_" + this.direction;
+                img = loadedAssets.imgs[currentTexture];
                 waitTime = 150;
             }
             else {
-                img = loadedAssets.imgs["player_idle_" + this.direction];
+                currentTexture = "player_idle_" + this.direction;
+                img = loadedAssets.imgs[currentTexture];
                 waitTime = 1000;
             }
+            if (currentTexture !== beforeTexture) {
+                wait = false;
+                clearTimeout(this.animateTimeout);
+            }
+            beforeTexture = currentTexture;
             c.beginPath();
             c.drawImage(img, x, 0, w, img.height, this.x, this.y, this.w, this.h);
             if (!wait) {
@@ -253,7 +274,7 @@ export class Player extends GameObject {
                     posX = 0;
                 }
                 wait = true;
-                setTimeout(() => {
+                this.animateTimeout = setTimeout(() => {
                     wait = false;
                 }, waitTime);
             }
@@ -261,6 +282,8 @@ export class Player extends GameObject {
         }
     }
     say(text, showTime_ms) {
+        if (this.dialogs.find(dialog => dialog.dialog === text))
+            return;
         this.dialogs.push({ dialog: text, showTime_ms });
     }
     debug() {

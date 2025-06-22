@@ -1,5 +1,6 @@
 export class GameObject {
     constructor(x, y, w, h, backdropRendering, type) {
+        this.data = {};
         this.x = x;
         this.y = y;
         this.realX = x;
@@ -14,6 +15,12 @@ export class GameObject {
         this.draw();
         if (debug)
             this.debug();
+    }
+    contains(object) {
+        return object.realRight() > this.realLeft()
+            && object.realLeft() < this.realRight()
+            && object.realTop() < this.realBottom()
+            && object.realBottom() > this.realTop();
     }
     top() {
         return this.y;
